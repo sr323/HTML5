@@ -1,0 +1,157 @@
+html{
+	background-color:#000000; 
+ 	color:white;
+ 	width: window.innerWidth;
+ 	height: window.innerHeight;
+ 	min-width: 800px;
+ 	max-height: 600px;
+ 	margin: 0px;
+ 	padding: 0px;
+ 	background: black url(../Images/background.jpg) no-repeat;
+ 	background-position: 50% -10%;
+ }
+
+ body{
+ 	width: 90%;
+ 	height: 100%;
+ 	min-width: 900px;
+ 	min-height: 500px;
+ 	max-width: 1280px;
+ 	margin:0px auto;
+ 	padding: 0px;
+ }
+
+ #logoAndNav{
+ 	margin: 0px;
+ 	padding: 0px;
+ 	height: 250px;
+}
+
+#logoImageDiv{
+	background: url(../Images/bannerImage.jpg) no-repeat center center;
+	margin: 0px auto;
+	height: 200px;
+	width: 600px;
+}
+
+#logIn{
+  	top: 20px;
+  	margin: 0 auto;
+  	position: relative;
+  	left: 400px;
+  	top: -200px;
+	width: 143px;
+	height: 80px;
+}
+
+#logIn form{
+  border: 2px solid #181818;
+  border-radius: 5px;
+}
+
+#logIn form input{
+	color:#FFFFFF;/*White text for submit buttons*/
+	background: #181818; /*Background color for the whole form*/
+	font-family:"Times New Roman", Times, serif;
+	border:1px solid #383838;
+	border-radius:2px;
+	padding:2px;
+	-webkit-transition: all 0.25s ease;
+}
+
+#logIn form input:focus
+{
+	color:#181818;
+	background: #FFFFFF;
+	outline: 1px solid #383838;
+
+}	
+
+#mainContent{
+	width: 100%;
+	height: 600px;
+	margin: 0 auto;
+	position: relative;
+	top: -82px;
+}
+
+/*Border checking for css.*/
+/*body{
+ 	border: 1px solid blue;
+}
+#logoAndNav{
+	border:1px solid white;
+}
+#mainContent{
+	border: 1px solid red;
+}
+#logIn{
+	border: 1px solid orange;
+}
+#shortDescription{
+	border: 1px solid green;
+}
+#highScoreTable{
+	border: 1px solid white;
+}*/
+/*End of borders.*/
+
+/*Start of Navigation*/
+
+#navWrapper{
+	width: 1000px; /*The width is set to accomodate the link width, which is 120px each. This should be manually modified if more links are added or removed.*/
+	height: 40px;
+	margin: 10px auto;
+}
+
+#navWrapper ul {
+	margin:0;
+}
+
+#navWrapper li{
+	float:left;
+	list-style:none;
+}
+
+#navWrapper a{
+	font-family:"Times New Roman", Times, serif;
+	padding:10px;
+	display:block;
+	position:relative;
+	top:-2px;
+	width:230px;
+	color:#ffffff;
+	background-color:#181818;
+	text-align:center;
+	text-decoration:none;
+	text-transform:uppercase;
+	float:left;
+	transition: all 0.25s ease;
+	-moz-transition: all 0.25s ease; /* Firefox 4 */
+	-webkit-transition: all 0.25s ease; /* Safari and Chrome */
+	-o-transition: all 0.25s ease; /* Opera */
+}
+
+#navWrapper li a:before{
+	content: '';
+	position: absolute;
+	top: -10%;
+	right: 0%;
+	bottom: -10%;
+	left: 0%;
+	z-index: -1;
+	background-color: #383838; /*Grey bar across the tops.*/
+	border-radius:5px;
+}
+
+#navWrapper li a:hover,a:active{
+	color:white;
+	background-color:#383838;
+}
+
+/*#navWrapper li:hover > ul{
+	display:block;
+	visibility:visible;
+}*/
+
+/*End of navigation bar*/

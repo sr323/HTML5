@@ -1,0 +1,1 @@
+make sprites like 64*64.

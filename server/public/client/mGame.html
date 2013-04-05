@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title>
+			Multiplayer online game using the HTML5 canvas and websockets
+		</title>
+
+		<meta name = "description" content = "An online multiplayer game which is built solely using HTML5. The game uses the HTML5 canvas and websockets, along with node js for the server/client communication."/>
+		<meta name = "author" content = "Samuel Mark Richards"/>
+		<meta name = "keywords" content = "html5, html, javascript, canvas, multiplayer, online, game, nodejs"/>
+		<meta http-equiv="content-language" content="en"/>
+
+		<link rel="stylesheet" href="css/mainTemplate.css">
+		<link rel="stylesheet" href="css/gamecss.css">
+
+	</head>
+
+	<body>
+
+		<div id = "logoAndNav">
+
+			<div id = "logoImageDiv"></div>
+
+			<div id = "navWrapper">
+				<li><a href = "index.html">Home</a></li>
+				<li><a href = "tutorial.html">Tutorials</a></li>	
+				<li><a href = "game.html">Practise Game</a></li>
+				<li><a href = "mGame.html">Multiplayer Game</a></li>
+			</div>
+
+		</div>
+
+		<div id = "logIn">
+
+			<form method = "post">
+				<input type="text" name="username" required placeholder = "Username"><br>
+			</form>
+
+		</div>
+
+		<div id = "mainContent">
+
+			<div id = "gameCanvasDiv">
+				<canvas id="backCanvas" width=800 height=600 style='width:800px;height:600px'></canvas>
+				<canvas id="frontCanvas" width=800 height=600 style='width:800px;height:600px'></canvas>
+				<canvas id="gameCanvas" width=800 height=600 style='width:800px;height:600px'>
+					Your browser doesn't support HTML5s' canvas. Please download the latest version of Google Chrome to get the best experience this website offers.
+				</canvas>
+				<canvas id = "hudCanvas" width = 800 height = 100 style='width:800px;height:100px'</canvas>
+			</div>
+			<!--At the moment the positioning of the canvases(absolute) to have multiple canvases breaks the full screen function..
+			Annoying. 
+			<div id = "buttons"> 
+				<button onclick = "fullScreen()">Full Screen</button>
+			</div>-->
+
+		</div>
+
+		<script type="text/javascript" src = "mJS/singleplayergame.js"></script>
+		<script type="text/javascript" src = "mJS/preloadedimages.js"></script>
+		<script type="text/javascript" src = "mJS/Player.js"></script>
+		<script type="text/javascript" src = "mJS/raf.js"></script>
+		<script type="text/javascript" src = "mJS/environment.js"></script>
+		<script type="text/javascript" src = "mJS/zombie.js"></script>
+		<script type="text/javascript" src = "mJS/Bullet.js"></script>
+		<script type="text/javascript" src = "mJS/multiplayer.js"></script>
+		<script src="http://localhost:8000/socket.io/socket.io.js"></script>
+		<!-- the final script refers to the server --> 
+	</body>
+
+	<!-- 
+		Insure Javascript is executed after the page is finished loading. By putting in an onloadEvent
+		for items which load with the page, or after the body div to insure the html has finished loading
+	-->
+	
+	<!-- 
+		The script calls here should be all here.
+		The script calls should start and stop the different canvas', for example
+		stopping the single player canvas, returns to menu, which then allows the user
+		to click multiplayer. 
+		
+		Would be easiest to have an image with html buttons over the picture for menu buttons
+		which allow the user to select options, the buttons have their own javascript actions.
+	-->
+	<script>
+		singleinitialisation();
+	</script>
+	
+</html>

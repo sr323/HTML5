@@ -1,0 +1,16 @@
+/*ZOMBIE SPRITE STATS
+		  After handlers has been created then animation should begin.*/
+
+		/*Zombie sprite dimensions:
+		4608 wide. 36 sprites across.  128px for each.
+		1024 high. 8 sprite rows down. 128px for each.
+
+		row 0 - facing west.
+		row 1 - facing north west.
+		row 2 - facing north.
+		row 3 - facing north east.
+		row 4 - facing east.
+		row 5 - facing south east.
+		row 6 - facing south.
+		row 7 - facing south west
+		*/

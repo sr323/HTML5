@@ -1,0 +1,27 @@
+/*Start of individual pages content.*/
+
+#highScoreTable{
+	font-family:"Times New Roman", Times, serif;
+	width: 30%;
+	height: 500px;
+	position: relative;
+	left: 5%;
+	top: 2%;
+	text-align: center;
+}
+
+#highScoreTable #table{
+	width: 100%;
+	height: 85%;
+	border:1px solid navy;
+}
+
+#shortDescription{
+	font-family:"Times New Roman", Times, serif;
+	width: 60%;
+	position: relative;
+	left: 38%;
+	bottom: 80%;
+}
+
+/*End of individual pages content.*/

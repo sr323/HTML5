@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+	<title>
+		Multiplayer online game using the HTML5 canvas and websockets
+	</title>
+
+	<meta name = "description" content = "An online multiplayer game which is built solely using HTML5. The game uses the HTML5 canvas and websockets, along with node js for the server/client communication."/>
+	<meta name = "author" content = "Samuel Mark Richards"/>
+	<meta name = "keywords" content = "html5, html, javascript, canvas, multiplayer, online, game, nodejs"/>
+	<meta http-equiv="content-language" content="en"/>
+
+	<link rel="stylesheet" href="css/mainTemplate.css">
+	<link rel="stylesheet" href="css/tutorials.css"> 
+
+	</head>
+
+	<body>
+
+		<div id = "logoAndNav">
+
+			<div id = "logoImageDiv"></div>
+
+			<div id = "navWrapper">
+				<li><a href = "index.html">Home</a></li>
+				<li><a href = "tutorial.html">Tutorial</a></li>
+				<li><a href = "game.html">Practise Game</a></li>
+				<li><a href = "mGame.html">Multiplayer Game</a></li>
+			</div>
+
+		</div>
+
+		<div id = "logIn">
+
+			<form method = "post">
+				<input type="text" name="username" required placeholder = "Username"><br>
+			</form>
+
+		</div>
+
+		<div id = "mainContent">
+
+			<div id = "tutorialDiv">
+
+				<h2> Welcome to the Tutorials Page </h2>
+
+				<li><a href = "#basics"> Basics </a></li>
+				<li><a href = "#advanced"> Advanced </a></li>
+				<li><a href = "#multiplayer"> Multiplayer </a></li>
+
+				<p>Welcome to the tutorials page, feel free to work through the entire tutorial or use the links just above, to navigate quickly through the page to a specific area.
+
+				<br/><br/> This tutorial covers the basics for new players, advanced information for aspects slightly more complicated, <br/>and multiplayer information.
+
+				</p>
+
+				<h3 id = "basics"> Basics </h3>
+
+				<p>Welcome to the game!<br/><br/>This game is a classic wave clearing game, which means enemies will rush you, and it's up to you to send them back <br/>to where they came from! Buut, after a wave has been cleared, a new wave begins, which is harder than the previous, <br/>so the aim of the game is to see how far you can get.<br/><br/>You are trying to keep alive in your house, and the zombies are trying to get you, they will continue to smash through your <br/>windows and charge at you, to stop them shoot them with your gun!
+
+					<h4>The player</h4>
+
+					<p>During the game you control one survivor, the survivor is dressed incredibly funky to distance himself from the zombie swine!</p><img src = "../client/Images/player.jpg" alt "player image" height="400" width="400">
+
+					<h4>Controls</h4>
+
+					<p>To move the player around use the W-A-S-D keys, these move the player up-down-left and right.<br/><br/>To fire the gun use the space bar.<br/><br/>To repair windows use the R key.</p>
+				</p>
+				<h3 id = "advanced"> Advanced </h3>
+				<p>You now know how to move around and interact with the world, so what's next?
+					<br/>
+					<h4>The enemy</h4>
+					<p>The enemy armys are made up completely of zombies, the zombies are a dark grey and very predictable. The zombies will break through your windows and attack you, if you take too much damage you will die. If your playing on your own the game is over, if your playing with others and everyone dies, the game is over.
+					</p><img src = "../client/Images/attacked.jpg" alt "player being attacked" height="400" width="400"><br/><br/>
+					<h4>The house</h4>
+					<p>Zombies will stop at nothing to get you, they will smash the windows through when needed, and it's up to you to fix them. By fixing the windows you keep the enemies out!<br/><br/>You can fix broken windows by moving close to it and holding R, you will place the planks back onto the windows.</p>
+					<h4>Pick-ups</h4><p>Sometimes when zombies die, they will drop a pick-up. Pick-ups are beneficial to the user, but get to them quickly, as they are time restricted!<br/><br/>Pick-ups can be picked up by the user, by simply running into them, pick-ups include: Health increase, speed increase, bullet size increase, shot speed increase and piercing bullets.</p><img src = "../client/Images/pickup.jpg" alt "player health pick-up" height="400" width="400"><br/><br/>
+				</p>
+				<h3 id = "multiplayer"> Multiplayer </h3>
+ 				<p>So your ready to play in the big league!<br/><br/>Well.. Welcome! Multiplayer is where you can test your ability and teamwork with others. The game is similar to single player, except your with other players, and more zombies spawn depending on the amount of players playing, look out for the other players, wearing there funky green and purple!.<br/><br/>
+ 				</p><img src = "../client/Images/others.jpg" alt "Other players image" height="400" width="400">
+
+ 					<br/><br/><p>
+ 					Ps. If the game doesn't load in multiplayer, this is because the game server is currently down!</p>
+ 				</p>
+ 				<h3>Now you're ready, go get them!</h3>
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

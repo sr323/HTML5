@@ -1,0 +1,66 @@
+#gameCanvas{
+	position: absolute;
+	top: 0;
+	z-index: 1;
+	cursor: none;
+}
+
+#frontCanvas{
+	position: absolute;
+	top: 0;
+	z-index: 2;
+	cursor: none;
+}
+
+#backCanvas{
+	position: absolute;
+	top: 0;
+	z-index: 0;
+	cursor: none;
+}
+
+#hudCanvas{
+	/*border:1px solid yellow;*/
+	position: absolute;
+	top: 600px;
+}
+
+button{
+	position: relative;
+	top: -400px;
+	color:#FFFFFF;/*White text for submit buttons*/
+	background: #181818; /*Background color for the whole form*/
+	font-family:"Times New Roman", Times, serif;
+	border:1px solid #383838;
+	border-radius:2px;
+	padding:2px;
+}
+
+#gameCanvasDiv{
+	/*border: 1px solid yellow;*/
+	/*Should be set the same to the original size of the canvas.
+	And when the canvas is changed javascript should be used to change the
+	width and height of this DIV also to keep the canvas in the center of
+	the screen. */
+	height: 600px;
+	width: 800px;
+	margin: 20px auto;
+}
+
+/*
+#buttons{
+	width: 200px;
+	margin: 0 auto;
+}
+
+#buttons button{
+	font-family:"Times New Roman", Times, serif;
+	font-size: 20px;
+	border: 2px;
+	border-radius: 5px;
+	width: 200px;
+	height: 25px;
+	color: white;
+	background-color: #181818;
+	border: 2px solid #383838;
+}*/
