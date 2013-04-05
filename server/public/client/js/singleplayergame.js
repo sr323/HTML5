@@ -431,7 +431,7 @@ function update(){
 		player.setmoveSpeed(3);
 	}
 
-	enemies.sort(function(a,b){console.log("sorting");return a.getY() - b.getY()});
+	enemies.sort(function(a,b){return a.getY() - b.getY()});
 
 	if(nextLevel){
 		nextLevel = false;
