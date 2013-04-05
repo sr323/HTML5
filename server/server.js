@@ -441,7 +441,7 @@ function resetGame(){
 */
 function emitLoop(){
 	if(running){
-		setTimeout(emitLoop, 1000 / 60);
+		setTimeout(emitLoop, 1000 / 30);
 		io.sockets.emit("updates", {bullets: JSON.stringify(bullets), score: score, level:level});
 	}
 	//Else { display end screen, ect.}
@@ -531,10 +531,9 @@ function addScore(){
 	console.log("current score - " + score);
 	console.log(util.inspect(scoreTable));
 
-
 	scoreTable.splice(scoreTable.length, 0 , score);
 
-	scoreTable.sort(function(a,b){return a - b});
+	scoreTable.sort(function(a,b){return b - a});
 
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
