@@ -527,7 +527,7 @@ function checkSomethingAlive(array){
 var scoreTable = new Array();
 
 function addScore(){
-	console.log("adding score");
+	/*console.log("adding score");
 	console.log("current score - " + score);
 	console.log(util.inspect(scoreTable));
 
@@ -542,5 +542,5 @@ function addScore(){
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
 
-	fs.writeFile("./public/score.txt", JSON.stringify(scoreTable));
+	fs.writeFile("./public/score.txt", JSON.stringify(scoreTable));*/
 };
