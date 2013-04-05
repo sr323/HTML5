@@ -535,10 +535,19 @@ function addScore(){
 
 	scoreTable.sort(function(a,b){return b - a});
 
-	if(scoreTable.length > 2){
-		scoreTable = scoreTable.splice(0,2);
+	if(scoreTable.length > 10){
+		scoreTable = scoreTable.splice(0,10);
 	};
 
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
+
+	fs.writeFile("score.txt", JSON.stringify(scoreTable));
+
+	setTimeout(2000, readFile);
 };
+
+function readFile(){
+	console.log("about to read");
+	console.log(fs.read("score.txt"));
+}
