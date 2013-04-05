@@ -535,7 +535,7 @@ function addScore(){
 	scoreTable.splice(scoreTable.length, 0 ,score);
 
 	scoreTable.sort();
-	
+
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
-}
+};
