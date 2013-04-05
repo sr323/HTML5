@@ -542,13 +542,13 @@ function addScore(){
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
 
-	fs.writeFile("score", JSON.stringify(scoreTable));
+	fs.writeFile("./public/score", JSON.stringify(scoreTable));
 
 	setTimeout(readFile,2000);
 };
 
 function readFile(){
-	fs.readFile("score", function(err, data){
+	fs.readFile("./public/score", function(err, data){
 		if(err) throw err;
 		console.log(data);
 	});
