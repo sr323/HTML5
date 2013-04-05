@@ -527,20 +527,4 @@ function checkSomethingAlive(array){
 var scoreTable = new Array();
 
 function addScore(){
-	/*console.log("adding score");
-	console.log("current score - " + score);
-	console.log(util.inspect(scoreTable));
-
-	scoreTable.splice(scoreTable.length, 0 , score);
-
-	scoreTable.sort(function(a,b){return b - a});
-
-	if(scoreTable.length > 10){
-		scoreTable = scoreTable.splice(0,10);
-	};
-
-	console.log("Finished adding");
-	console.log(util.inspect(scoreTable));
-
-	fs.writeFile("./public/score.txt", JSON.stringify(scoreTable));*/
 };
