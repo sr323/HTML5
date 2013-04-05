@@ -43,7 +43,7 @@ var setEventHandlers = function(){
 	socket.on("remove player", onRemovePlayer);
 	
 	//Self made socket functions
-
+	//When a new player joins, they recieve information based on the current game.
 	socket.on("new player information", newPlayerInformation);
 
 	//player has died
@@ -51,6 +51,7 @@ var setEventHandlers = function(){
 
 	//A player has stopped moving
 	socket.on("not moved", onNonMove);
+
 	//Updates
 	socket.on("updates",updatings);
 
@@ -163,7 +164,7 @@ var updateUserLocation = function(){
 		//Recursive call to constantely update the user location.
 		//The divide amount shows how many times this function is called each second(1000 millieseconds)
 		//higher the number, the more responsive it is.
-		setTimeout( updateUserLocation, 1000/60);
+		setTimeout( updateUserLocation, 1000/30);
 	}
 };
 
