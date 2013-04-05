@@ -548,6 +548,5 @@ function addScore(){
 };
 
 function readFile(){
-	console.log("about to read");
-	console.log(fs.read("score"));
+	console.log(fs.readFile("score"));
 }
