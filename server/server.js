@@ -530,22 +530,12 @@ function addScore(){
 	console.log("adding score");
 	console.log("current score object");
 	console.log(util.inspect(scoreTable));
-	var foundPlace = false;
-	if(scoreTable.length == 0){
-		console.log("length = 0");
-		scoreTable.splice(0,0, score);
-	}
-	else{
-		for(var i = 0; i < scoreTable.length; i++){
-			if(!foundPlace){
-				if(score > scoreTable[i]){
-					scoreTable.splice(i, 0, score);
-					foundPlace = true;
-				}
-			}
-		}
-	}
 
+
+	scoreTable.splice(scoreTable.length, 0 ,score);
+
+	scoreTable.sort();
+	
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
 }
