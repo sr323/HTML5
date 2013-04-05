@@ -431,6 +431,8 @@ function update(){
 		player.setmoveSpeed(3);
 	}
 
+	enemies.sort(function(a,b){console.log("sorting");return a.getY() - b.getY()});
+
 	if(nextLevel){
 		nextLevel = false;
 		console.log("next level initiated");

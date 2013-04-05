@@ -437,7 +437,7 @@ function update(){
 		player.setmoveSpeed(3);
 	}
 
-	//Put zombies in correct order.
+	//Put zombies in correct order. So they dont get drawn infront of others- when they are below them. Graphics issue.
 	enemies.sort(function(a,b){return a.getY() - b.getY()});
 
 	for(var i = 0; i < enemies.length; i++){
