@@ -13,7 +13,7 @@ window.mInit = function(){
 	dir = localPlayer.getDir();
 	
 	//The server which this client will try to connect with.
-	socket = io.connect("http://localhost", {port: 8000, transports: ["websocket"]});
+	socket = io.connect("http://http://37.235.54.208", {port: 8000, transports: ["websocket"]});
 	
 	//Remote client array here. Holds information about all other players.
 	remotePlayers = [];
