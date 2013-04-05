@@ -542,12 +542,12 @@ function addScore(){
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
 
-	fs.writeFile("score.txt", JSON.stringify(scoreTable));
+	fs.writeFile("score", JSON.stringify(scoreTable));
 
 	setTimeout(readFile,2000);
 };
 
 function readFile(){
 	console.log("about to read");
-	console.log(fs.read("score.txt"));
+	console.log(fs.read("score"));
 }
