@@ -82,6 +82,7 @@ var setEventHandlers = function(){
 	//Everyone has died, resets the game.
 	socket.on("end game", endGame);
 };
+
 //REFERENCE
 //http://stackoverflow.com/questions/13028604/sending-a-javascript-object-through-websockets-with
 var updatings = function(data){
@@ -164,7 +165,7 @@ var updateUserLocation = function(){
 		//Recursive call to constantely update the user location.
 		//The divide amount shows how many times this function is called each second(1000 millieseconds)
 		//higher the number, the more responsive it is.
-		setTimeout( updateUserLocation, 1000/30);
+		setTimeout(updateUserLocation, 1000/30);
 	}
 };
 
@@ -501,153 +502,3 @@ function endGame(){
 
 	}),2500);
 };
-
-/********************************************
-**	Remote classes
-*********************************************/
-
-// Remote zombie class
-var remoteZombie = function(_id, _x, _y, _inside, _health, _currentTime){
-	var id = _id, x = _x, y = _y, inside = _inside, health = _health, currentTime = _currentTime;
-
-	return{
-		id:id, x:x, y:y, inside:inside, health:health, currentTime:currentTime
-	};
-};
-
-//remote player class
-var remotePlayer = function(_x,_y,_dir){
-
-	var x = _x, y = _y, dir = _dir, id, dead = false, moved = false, currentSprite = 0, deathAnimFinished =  false,
-	
-	getX = function(){
-		return x;
-	},
-	
-	getY = function(){
-		return y;
-	},
-	
-	getDir = function(){
-		return dir;
-	},
-	
-	setX = function(p){
-		x = p;
-	},
-	
-	setY = function(o){
-		y = o;
-	},
-	
-	setDir = function(m){
-		dir = m;
-	},
-
-	setMoved = function(n){
-		moved = n;
-	},
-
-	getMoved = function(o){
-		return moved;
-	},
-
-	getCurrentSprite = function(){
-		return currentSprite;
-	},
-
-	spriteIterate = function(){
-		if(!dead && moved){
-			walk();
-		}
-		else if(!dead){
-			stand();
-		}
-		else{
-			die();
-		}
-	},
-
-	setDead = function(deathBool){
-		//console.log(dead);
-		//console.log(deathBool);
-		dead = deathBool;
-		if(dead){
-			deathAnimFinished = false;
-		};
-		//console.log(dead);
-	},
-
-	getDead = function(){
-		return dead;
-	},
-
-	stand = function(){
-		//first 4 columns - standing still.
-		if(currentSprite < 3){
-			currentSprite++;
-		}
-		else{
-			currentSprite = 0;
-		}
-	},
-
-	walk = function(){
-		//columns 5-12 - walking.
-		if(currentSprite < 11 && currentSprite > 4){
-			currentSprite++;
-		}
-		else{
-			currentSprite = 5;
-		}
-	},
-
-	die = function(){
-		if(!deathAnimFinished){
-			//Death shouldn't loop.
-			if(currentSprite < 27 && currentSprite > 22){
-				currentSprite++;
-				if(currentSprite == 27){
-					deathAnimFinished = true;
-				}
-			}
-			else{
-				currentSprite = 23;
-			}
-		}
-	};
-
-	var boxWidth = 30;
-	var boxHeight = 60;
-	var boxX = function(){
-		return getX() - (boxWidth/2);
-	};
-	var boxY = function(){
-		return getY() - (boxHeight/2);
-	};
-
-	
-	return{
-		spriteIterate:spriteIterate,
-		getCurrentSprite:getCurrentSprite,
-		x:x,
-		y:y,
-		dir:dir,
-		id:id,
-		getX:getX,
-		getY:getY,
-		getDir:getDir,
-		setX:setX,
-		setY:setY,
-		setDir:setDir,
-		setDead:setDead,
-		setMoved:setMoved,
-		getMoved:getMoved,
-		boxWidth:boxWidth,
-		boxHeight:boxHeight,
-		boxX:boxX,
-		boxY:boxY,
-		getDead:getDead
-	};
-};
-

@@ -535,6 +535,10 @@ function addScore(){
 
 	scoreTable.sort(function(a,b){return b - a});
 
+	if(scoreTable.length > 2){
+		scoreTable = scoreTable.splice(0,2);
+	};
+
 	console.log("Finished adding");
 	console.log(util.inspect(scoreTable));
 };
