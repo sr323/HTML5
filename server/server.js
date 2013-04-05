@@ -544,10 +544,3 @@ function addScore(){
 
 	fs.writeFile("./public/score.txt", JSON.stringify(scoreTable));
 };
-
-function readFile(){
-	fs.readFile("./public/score.txt", function(err, data){
-		if(err) return;
-		console.log(data);
-	});
-}
