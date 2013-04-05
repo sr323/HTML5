@@ -528,7 +528,7 @@ var scoreTable = new Array();
 
 function addScore(){
 	console.log("adding score");
-	console.log("current score object");
+	console.log("current score - " + score);
 	console.log(util.inspect(scoreTable));
 
 
