@@ -544,7 +544,7 @@ function addScore(){
 
 	fs.writeFile("score.txt", JSON.stringify(scoreTable));
 
-	setTimeout(2000, readFile);
+	setTimeout(readFile,2000);
 };
 
 function readFile(){
