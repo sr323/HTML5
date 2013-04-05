@@ -437,6 +437,9 @@ function update(){
 		player.setmoveSpeed(3);
 	}
 
+	//Put zombies in correct order.
+	enemies.sort(function(a,b){return a.getY() - b.getY()});
+
 	for(var i = 0; i < enemies.length; i++){
 		//SHOULD just find the nearest player. This should be run on the server anyway.
 		var tempplayer = player;
