@@ -535,7 +535,7 @@ var scoreTable = new Array();
 
 function readScore(){
 	console.log("reading previous scores");
-	tempTextFile = fs.readFile("./public/score.txt")
+	tempTextFile = fs.readFile("./public/score.txt");
 	scoreTable = JSON.parse(tempTextFile);
 	console.log(util.inspect(scoreTable));
 };
