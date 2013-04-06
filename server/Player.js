@@ -1,3 +1,10 @@
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: 
+*/
+
 /**************************************************
 ** GAME PLAYER CLASS
 **************************************************/

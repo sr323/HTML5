@@ -1,3 +1,10 @@
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: 
+*/
+
 var house = function(){
 
 	var _window = function(){

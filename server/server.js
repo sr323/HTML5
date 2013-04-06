@@ -1,3 +1,10 @@
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: nkm 
+*/
+
 /*************************************************
 ** Serving web-pages
 *************************************************/
@@ -525,6 +532,14 @@ function checkSomethingAlive(array){
 ****************************/
 
 var scoreTable = new Array();
+
+function readScore(){
+	console.log("reading previous scores");
+	scoreTable = JSON.parse(fs.readFile("./public/score.txt"));
+	console.log(util.inspect(scoreTable));
+};
+
+readScore();
 
 function addScore(){
 	console.log("adding score");

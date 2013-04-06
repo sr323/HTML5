@@ -1,3 +1,10 @@
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: 
+*/
+
 var bullet = function(_x,_y, _xDir, _yDir, _pierce, _damage, _id, _bulletSize){
 
 	var x = _x, y = _y, speed = 1, xDir = _xDir, yDir = _yDir, pierce = _pierce, damage = _damage, TTL = 400;

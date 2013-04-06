@@ -34,13 +34,13 @@
 
 		<div id = "logIn">
 
-			<form method = "post">
-				<input type="text" name="username" required placeholder = "Username"><br>
-			</form>
 
 		</div>
 
 		<div id = "mainContent">
+
+			<!-- The game is placed inside the main content div -->
+			<!-- Within the gameCanvasDiv are 3 canvases, this is because we use 3 canvases to create the game, the front canvas draws all the elements which are in the house, the back canvas draws the zombies which are outside the house, and the gameCanvas draws the background image (the house), this is because of performance issues, with having a canvas for the house, it saves the browser continuously drawing the background house image at each change to the world, this just draws the background house image once. -->
 
 			<div id = "gameCanvasDiv">
 				<canvas id="backCanvas" width=800 height=600 style='width:800px;height:600px'></canvas>
@@ -50,14 +50,10 @@
 				</canvas>
 				<canvas id = "hudCanvas" width = 800 height = 100 style='width:800px;height:100px'</canvas>
 			</div>
-			<!--At the moment the positioning of the canvases(absolute) to have multiple canvases breaks the full screen function..
-			Annoying. 
-			<div id = "buttons"> 
-				<button onclick = "fullScreen()">Full Screen</button>
-			</div>-->
 
 		</div>
 
+		<!-- Scripts are imported onto the HTML page, the page acts as a central hub for all JavaScript files-->
 		<script type="text/javascript" src = "mJS/singleplayergame.js"></script>
 		<script type="text/javascript" src = "mJS/preloadedimages.js"></script>
 		<script type="text/javascript" src = "mJS/Player.js"></script>
@@ -65,26 +61,13 @@
 		<script type="text/javascript" src = "mJS/environment.js"></script>
 		<script type="text/javascript" src = "mJS/zombie.js"></script>
 		<script type="text/javascript" src = "mJS/Bullet.js"></script>
+		<!-- the multiplayer JavaScript file is imported, and controls the communication between the server and the client, it controls how the messages are interpreted, and sends messages out when appropriate -->
 		<script type="text/javascript" src = "mJS/multiplayer.js"></script>
+		<!-- the page needs to call the websockets location which it will be using, the websockets will then use this information to remember where to send information from, and who has sent information to it. -->
 		<script src="http://37.235.54.208:8000/socket.io/socket.io.js"></script>
-		<!--<script src="http://localhost:8000/socket.io/socket.io.js"></script>-->
-		<!-- the final script refers to the server --> 
+
 	</body>
 
-	<!-- 
-		Insure Javascript is executed after the page is finished loading. By putting in an onloadEvent
-		for items which load with the page, or after the body div to insure the html has finished loading
-	-->
-	
-	<!-- 
-		The script calls here should be all here.
-		The script calls should start and stop the different canvas', for example
-		stopping the single player canvas, returns to menu, which then allows the user
-		to click multiplayer. 
-		
-		Would be easiest to have an image with html buttons over the picture for menu buttons
-		which allow the user to select options, the buttons have their own javascript actions.
-	-->
 	<script>
 		singleinitialisation();
 	</script>
