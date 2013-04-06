@@ -20,6 +20,7 @@
 
 		var xmlhttp = new XMLHttpRequest();
 		var scores;
+		var stringTable = "<table>";
 
 		xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
@@ -30,19 +31,23 @@
 		  		var scoresArray = JSON.parse(scores);
 		  		console.log("scores parsed");
 
-		  		var stringTable = "<table>";
+		  		
 
 		  		for(var i = 0; i < scoresArray.length; i++){
 		  			stringTable += "<tr><td>" + scoresArray[i] + "</td></tr>";
 		  		}
-
-		  		stringTable+="</table>";
-
-		  		console.log(stringTable);
-
-		  		document.getElementById("table").innerHTML = stringTable;
 		    }
 		}
+
+		for(var i = 10; i > scoresArray.length; i--){
+			stringTable += "<tr><td></td></tr>";
+		}
+
+  		stringTable+="</table>";
+
+  		console.log(stringTable);
+
+  		document.getElementById("table").innerHTML = stringTable;
 
 	xmlhttp.open("GET","http://37.235.54.208:3000/score.txt",true);
 	xmlhttp.send();
