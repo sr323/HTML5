@@ -533,20 +533,6 @@ function checkSomethingAlive(array){
 
 var scoreTable = new Array();
 
-function readScore(){
-	console.log("reading previous scores");
-	var tempTextFile;
-	fs.readFile("./public/score.txt", function (err, data) {
-	  if (err) throw err;
-	  tempTextFile = data;
-	});
-	console.log("read");
-	scoreTable = JSON.parse(tempTextFile);
-	console.log(util.inspect(scoreTable));
-};
-
-readScore();
-
 function addScore(){
 	console.log("adding score");
 	console.log("current score - " + score);
