@@ -45,10 +45,6 @@
 		    }
 		}
 
-		if(scores == null){
-			document.getElementById("table").innerHTML = "No high scores set yet!";
-		}
-
 	xmlhttp.open("GET","http://37.235.54.208:3000/score.txt",true);
 	xmlhttp.send();
 
