@@ -30,11 +30,11 @@ table{
 	height: 9%;
 }
 
-tr{
+th, td, tr{
 	border: 1px solid green;
 }
 
 td{
-	color: blue;
+	color: black;
 }
 /*End of individual pages content.*/
