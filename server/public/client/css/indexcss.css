@@ -12,7 +12,7 @@
 
 #highScoreTable #table{
 	width: 100%;
-	height: 85%;
+	height: 90%;
 	border:1px solid navy;
 }
 
@@ -22,6 +22,17 @@
 	position: relative;
 	left: 38%;
 	bottom: 80%;
+}
+
+table{
+	width: 100%;
+	background-color: white;
+	text-align: center;
+	height: 9%;
+}
+
+tr{
+	border: 1px solid green;
 }
 
 /*End of individual pages content.*/
