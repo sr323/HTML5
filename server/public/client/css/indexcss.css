@@ -25,16 +25,17 @@
 
 table{
 	width: 100%;
-	background-color: #C0C0C0;
+	background-color: black;
+	font-family: "Times New Roman", Times, serif;
 	text-align: center;
 	height: 9%;
 }
 
 th, td, tr{
-	border: 1px solid green;
+	border: 1px solid white;
 }
 
 td{
-	color: black;
+	color: white;
 }
 /*End of individual pages content.*/
