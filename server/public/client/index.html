@@ -20,6 +20,8 @@
 
 		var xmlhttp = new XMLHttpRequest();
 		var scores;
+		var scoresArray = new Array;
+		scoresArray.length = 0;
 		var stringTable = "<table>";
 
 		xmlhttp.onreadystatechange=function(){
@@ -28,7 +30,7 @@
 		  		scores = xmlhttp.responseText;
 		  		console.log("Scores recieved");
 
-		  		var scoresArray = JSON.parse(scores);
+		  		scoresArray = JSON.parse(scores);
 		  		console.log("scores parsed");
 
 		  		
