@@ -16,7 +16,23 @@
 	<link rel="stylesheet" href="css/indexcss.css"> 
 
 	<script type="text/javascript">	
+	//http://37.235.54.208:3000/score.txt - location of text file.
 
+		var xmlhttp = new XMLHttpRequest();
+
+		xmlhttp.onreadystatechange=function(){
+			console.log("on ready change");
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		    {
+		    	console.log("got file");
+		    	console.log(xmlhttp.responseText);
+		    document.getElementById("table").innerHTML=xmlhttp.responseText;
+		    }
+		}
+		console.log("trying");
+		
+	xmlhttp.open("GET","http://37.235.54.208:3000/score.txt",true);
+	xmlhttp.send();
 
 	</script>
 
