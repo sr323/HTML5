@@ -36,6 +36,10 @@
 		  			stringTable += "<tr><td>" + scoresArray[i] + "</td></tr>";
 		  		}
 
+		  		for(var i = scoresArray.length; i < 10; i++){
+		  			stringTable += "<tr><td></td></tr>";
+		  		}
+
 		  		stringTable+="</table>";
 
 		  		console.log(stringTable);
@@ -45,8 +49,8 @@
 		    }
 		}
 
-	xmlhttp.open("GET","http://37.235.54.208:3000/score.txt",true);
-	xmlhttp.send();
+		xmlhttp.open("GET","http://37.235.54.208:3000/score.txt",true);
+		xmlhttp.send();
 
 	</script>
 
