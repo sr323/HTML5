@@ -1,6 +1,12 @@
-var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: the player class of the game, this game is controlled by the user.
+*/
+//@_param _zombieSprite - is actually the human sprite image
+var Player = function(_zombieSprite){
 
-	//Things to add.. bullet speed manipulation. bullet piercin.
 
 	//Sprite variables.
 	var zombieSprite = _zombieSprite, currentSprite = 0, spriteChange = 0;
@@ -12,10 +18,13 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 	var sound = false;
 
 	var health = 20; 
+	//takes damage from health
+	//@param deeps - the damage to take
 	var takeDamage = function(deeps){
 		if(health > 0){
 			health -= deeps;
 		}
+		//if health == 0 kill the player
 		if(getDead()){
 			dead = true;
 			if(!sound){
@@ -26,13 +35,14 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 		}
 
 		window.addDamageText();
-
-		//Should have a flashing red hit marker here.
-		//console.log("Taken " + deeps + " damage."); 
 	};
+	//gets the health
+	//@return health return health
 	var getHealth = function(){
 		return health;
 	};
+	//sets the health
+	//@param heal - the heal amount
 	var setHealth = function(heal){
 		console.log(heal);
 		if(health < 20){
@@ -42,34 +52,39 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 			health = 20;
 		}
 	};
+	//resets health to 10
 	var resetHealth = function(){
 		health = 10;
 	};
+	//returns true if dead aka health = 0
+	//@return health = 0 true else false
 	var getDead = function(){
 		return health == 0;
 	};
-
+	//sets pierce of player bullets
+	//@param s - the new pierce value
 	var setPierce = function(s){
 		pierce = s;
 	};
-
+	//gets the pierce of player bullets
+	//@rturn pierce te pierce value
 	var getPierce = function(){
 		return pierce;
 	};
 
-	/*Should put the update for the player in the actual player class.. -.-*/
-
 	//Bounding box
 	var boxWidth = 30;
 	var boxHeight = 60;
+	//returns the x value of the box
 	var boxX = function(){
 		return getX() - (boxWidth/2);
 	};
+	//returns the y value of the box
 	var boxY = function(){
 		return getY() - (boxHeight/2);
 	};
 
-	//Pre-rendering canvas
+	//Pre-rendering canvas used for optimisation
 	var render_canvas = document.createElement('canvas');
 	render_canvas.width = 4608;
 	render_canvas.height = 1024;
@@ -77,55 +92,53 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 
 	render_context.drawImage(zombieSprite,0,0, render_canvas.width, render_canvas.height);
 
-	//Append the canvas onto the gameCanvasDiv element on the HTML page to check the image is correct.
-	//gameCanvasDiv.appendChild(render_canvas);
 
 	/*Getters and setters.*/
-
+	//returns current x
 	var getX = function(){
 		return x;
 	};
-
+	//returns current y
 	var getY = function(){
 		return y;
 	};
-
+	//sets the x value
 	var setX = function(_x){
 		x = _x;
 	};
-
+	//sets the y value
 	var setY = function(_y){
 		y = _y;
 	};
-
+	//returns movement speed
 	var getmoveSpeed = function(){
 		return moveSpeed;
 	};
-
+	//sets moved variable used to draw standing or running sprite
 	var setMoved = function(_moved){
 		moved = _moved;
 	};
-
+	//sets move speed
 	var setmoveSpeed = function(speed){
 		moveSpeed = speed;
 	};
-
+	//gets the direction the player is facing
 	var getDir = function(){
 		return direction;
 	};
-
+	//sets the direction of the player
 	var setDir = function(_dir){
 		direction = _dir;
 	};
-
+	//sets the damage of the player
 	var setDamage = function(f){
 		damage = f;
 	};
-
+	//gets the damage of the player
 	var getDamage = function(){
 		return damage;
 	};
-
+	//sprite iterate will keep the correct sprite being displayed
 	var spriteIterate = function(){
 		if(!dead && moved){
 			walk();
@@ -136,25 +149,8 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 		else{
 			die();
 		}
-
-		/*ZOMBIE SPRITE STATS
-		  After handlers has been created then animation should begin.*/
-
-		/*Zombie sprite dimensions:
-		4608 wide. 36 sprites across.  128px for each.
-		1024 high. 8 sprite rows down. 128px for each.
-
-		row 0 - facing west.
-		row 1 - facing north west.
-		row 2 - facing north.
-		row 3 - facing north east.
-		row 4 - facing east.
-		row 5 - facing south east.
-		row 6 - facing south.
-		row 7 - facing south west
-		*/
 	};
-
+		//if standing draw standing sprite
 	var stand = function(){
 		//first 4 columns - standing still.
 		if(currentSprite < 3){
@@ -164,7 +160,7 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 			currentSprite = 0;
 		}
 	};
-
+		//if walking draw walking sprites
 	var walk = function(){
 		//columns 5-12 - walking.
 		if(currentSprite < 11 && currentSprite > 4){
@@ -174,11 +170,11 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 			currentSprite = 5;
 		}
 	};
-
+	//if attacking draw attacking sprites
 	var attack = function(){
 		//columns 13-22 - attacking.
 	};
-
+	//if dead draw dead sprites
 	var die = function(){
 		if(!deathAnimFinished){
 			//Death shouldn't loop.
@@ -193,10 +189,9 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 			}
 		}
 	};
-
+	//draw method to draw the player
+	//@param context - the canvas to draw onto
 	var draw = function(context){
-		//Maybe have to -64 from x and y, to keep the image on it's exact x and y.
-		//and not drawing from it, this would fuck collision detection.
 		context.drawImage(render_canvas, //Image
 			currentSprite * 128, direction * 128, /*Source image x and y*/
 			128,128, /*Source image width and height*/
@@ -205,14 +200,14 @@ var Player = function(_zombieSprite){/*Zombies will have parameters passed in.*/
 		moved = false;
 	};
 
-
+	//draw the bounding box
+	//@param context - the canvas to draw onto
 	var drawBoundingBox = function(context){
 		context.fillRect(boxX(), boxY(), 
 			boxWidth, boxHeight);
 	};
 
-	//Must remember to return all possible functions here.
-	//Otherwise they can't be seen by other classes.
+	//returns all variables and functions for external use
 	return{
 		getX:getX,
 		getY:getY,

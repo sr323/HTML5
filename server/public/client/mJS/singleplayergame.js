@@ -1,5 +1,12 @@
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: the main class, this class completely runs the game and creates instances of the other classes
+*/
 /****************/
 /*Game Variables*/
+
 window.keys;
 window.canvas;
 window.context;
@@ -58,36 +65,41 @@ window.bulletshotsound = new Audio("../Sounds/gunshot.wav");
 
 /****************/
 /*Initialisation*/
-
+//this is triggered by the html page upon load
 function singleinitialisation(){
-
+	//create the preloadedimages variable
 	window.loadedImages = new preloadedimages();
 
-	//Keys variable. As an object literal full of name:value pairs.
+	//Keys variable is used to store all keys which are currently pressed
 	keys = {
 		//Pressed array, holds true or nothing for keys which are pressed down.
 		pressed:{},
-		//Creates a variable which references a function.
-		//To trigger the function the syntax needs to be "function(event){keys.isDown(event);}"
+		//checks if a key is currently pressed
+		//@param keyCode the keycode of the key checked
 		isDown: function(keyCode){
 			return this.pressed[keyCode];
 		},
+		//is called when a key is pressed
+		//@param event the keycode of the key pressed
 		onKeydown: function(event){
 			this.pressed[event.keyCode] = true;
 		},
+		//releases a key from being pressed
+		//@param event - the keycode of the released key
 		onKeyup: function(event){
 			delete this.pressed[event.keyCode];
 		}
 	};
 	//When the window has initialised, sets up the arena.
 	window.onload = function(){
-
+		//the canvas elements
 		window.canvas = document.getElementById("frontCanvas");
+		//the context is the area inside the canvas, this is why this is drawn onto, to draw onto the canvas.
 		window.context = canvas.getContext("2d");
-
+		//background canvas
 		window.backCanvas = document.getElementById("backCanvas");
 		window.backContext = backCanvas.getContext("2d");
-
+		//hud canvas
 		window.hudCanvas = document.getElementById("hudCanvas");
 		window.hudContext = hudCanvas.getContext("2d");
 
@@ -97,73 +109,68 @@ function singleinitialisation(){
 		*/
 		window.backgroundCanvas = document.getElementById('gameCanvas');
 		window.backgroundContext = window.backgroundCanvas.getContext('2d');
-
+		//creates encironment
 		housePlanks = new environment(loadedImages.plank);
-
+		//draws the background image
 		backgroundContext.drawImage(loadedImages.background,0,0,backgroundCanvas.width, backgroundCanvas.height);
-
+		//draws all the houseplanks
 		housePlanks.draw(context);
-
+		//draws the background canvas on the main canvas initially
 		context.drawImage(backgroundCanvas, 0, 0, canvas.width, canvas.height);
-
+		//creates a new player
 		player = new Player(loadedImages.playerImage, loadedImages.otherPlayer);
-
+		//triggers the initiailise method 'mInit' in the multiplayer class.
 		mInit();
-
+		//draws the player
 		player.draw(context);	
-
+		//sets up handlers - aka event listeners
 		handlers();
 	}
 };
-
+//initialises event listeners for the window which effect the game element
+//reference for mouse co-ords - http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+//reference for key presses - http://nokarma.org/2011/02/27/javascript-game-development-keyboard-input/index.html
 function handlers(){
-	/*
-	 Can't add event listener to canvas, as it's not a focusable object.
-	 And the arrow keys effect scrolling. So should use WASD for moving the
-	 player.
-	*/
 	window.addEventListener('keyup', function(event) { keys.onKeyup(event); }, false);
     window.addEventListener('keydown', function(event) { keys.onKeydown(event); }, false);
-    //http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
     canvas.addEventListener('mousedown', checkMouseDown, false);
     canvas.addEventListener('mousemove', mouseCoords, false);
-
+    //starts the game updating
     singleupdate();
 };
 
 function checkMouseDown(event){
 	//Code for firing a gun or what not.
 };
-
+//fires a bullet from the players location in a direction
 function fireBullet(){
-	//_x,_y, _speed, _xDir, _yDir, _pierce, _damage parameters.
+	//creates a new bullet with all appropriate variables
 	if(shotTimer > shotDif){
-		//Should call a multiplayer bullet shot fire method here.
+		//with the multiplayer game it uses the multiplayer create bullet method, which uses the server to create the bullet
 		window.mFireBullet(player.getX(), player.getY(), (mouseX - player.getX()), (mouseY - player.getY()), player.getPierce(), player.getDamage(), window.bulletSize);
 		shotTimer = 0;
 		bulletshotsound.play();
 	}
 };
-
+//mouse co ordinates information passed to this method when the event is triggered.
+//@param event - all of the mouse co-ordinate information
 function mouseCoords(event){
+
+	//has to find the x and y from the canvases offset
 	var rect = canvas.getBoundingClientRect();
 
-	//should find a reference here.
+	//Sets the mouse x variable with the current mouse x location
 	window.mouseX = (event.clientX - rect.left);
+	//Sets the mouse y variable with the current mouse y location
 	window.mouseY = (event.clientY - rect.top);
 };
 
-function mousePosition(){
-	if(!player.getDead()){
-		var dirx = mouseX - player.getX();
+//method changes the players direction to face the mouse at all times
+function mousePosition(){ 
+	if(!player.getDead()){//if player isnt dead
+		var dirx = mouseX - player.getX();//find the difference between the player and the co-ordinates
 		var diry = mouseY - player.getY();
-		/*
-		-30 y = north 30 y = south 30 x = east -30 x = west 
-		direction 0 - facing west. direction 1 - facing north west.
-		direction 2 - facing north. direction 3 - facing north east.
-		direction 4 - facing east. direction 5 - facing south east.
-		direction 6 - facing south. direction 7 - facing south west
-		*/
+		//sets the correct direction depending on the mouse and player locations
 		if(diry < -10 && dirx < 30 && dirx > -30){
 			//North
 			player.setDir(2);
@@ -195,20 +202,19 @@ function mousePosition(){
 	}
 };
 
-/*Game initialisation and handlers should be complete*/
-/*Now the game should loop at a constant 60 fps.     */
+//the game has to run at a steady rate, and call update and draw methods to keep the canvas dynamic, and simulating a game.
+//this method insures that.
+//this method is recursively called 60 times a second, and calls update and draw, and also checks mouse position.
 function singleupdate(){
+	//uses requestAnimFrame from the raf class to call itself 60 times a second.
 	window.requestAnimFrame(singleupdate);
-
+	//checks the position of the mouse
 	mousePosition();
-	
-	//Should check for collisions here before calling the player and zombies to all move.
-	//Should maybe store all which collide and where??
-	//console.log(player.getDead());
+	//if player isnt dead then checks for keyboard input
 	if(!player.getDead()){
 		checkKeyInput();
 	}
-
+	//keeps sprites iterating
 	window.spriteChange++;
 	if(spriteChange == 15){
 		player.spriteIterate();
@@ -217,21 +223,22 @@ function singleupdate(){
 		}
 		spriteChange = 0;
 	}
-
+	//calls update
 	update();
-
+	//calls draw
 	drawElements();
 };
 
+//keyboard input is checked constantely, and the input from the user is used to control the player.
 function checkKeyInput(){
-	//At the moment keys are getting priority over others.
-	//Could be rectified with more if statements.
+	//uses keycodes and only checks keys needed
 	if(keys.isDown(82)){
+		//checks r to fix windows
 	//	console.log("R pressed");
 	console.log("calling repair");
 		repair();
 	}
-	//W + A
+	//W + A- moves player up and left
 	if(keys.isDown(87) && keys.isDown(65)){
 		//console.log(" A + W ");
 		if(player.getY()>80 && player.getX() > 14){
@@ -240,7 +247,7 @@ function checkKeyInput(){
 			player.setX(player.getX() - player.getmoveSpeed());
 		}
 	}
-	//W + D
+	//W + D- moves player up and right
 	else if(keys.isDown(87) && keys.isDown(68)){
 	//	console.log("W+ D");
 		if(player.getY()>80 && player.getX()<785){
@@ -249,7 +256,7 @@ function checkKeyInput(){
 			player.setX(player.getX() + player.getmoveSpeed());
 		}
 	}
-	//S + A
+	//S + A - moves player down and left
 	else if(keys.isDown(83) && keys.isDown(65)){
 	//	console.log("S+A");
 		if(player.getY() <545 && player.getX() > 14){
@@ -258,7 +265,7 @@ function checkKeyInput(){
 			player.setX(player.getX() - player.getmoveSpeed());
 		}
 	}
-	//S + D
+	//S + D - moves player down and right
 	else if(keys.isDown(83) && keys.isDown(68)){
 	//	console.log("S+D");
 		if(player.getY() <545 && player.getX()<785){
@@ -267,7 +274,7 @@ function checkKeyInput(){
 			player.setX(player.getX() + player.getmoveSpeed());
 		}
 	}
-	//W
+	//W - moves player up
 	else if(keys.isDown(87)){
 	//	console.log("W");
 		if(player.getY()>81){
@@ -276,7 +283,7 @@ function checkKeyInput(){
 			player.setY(player.getY() - player.getmoveSpeed());
 		}
 	}
-	//A
+	//A - moves player left
 	else if(keys.isDown(65)){
 		//console.log("A");
 		if(player.getX() > 15){
@@ -285,7 +292,7 @@ function checkKeyInput(){
 			player.setX(player.getX() - player.getmoveSpeed());
 		}
 	}
-	//S
+	//S - moves player down
 	else if(keys.isDown(83)){
 	//	console.log("S");
 		if(player.getY() <545){
@@ -294,7 +301,7 @@ function checkKeyInput(){
 			player.setY(player.getY() + player.getmoveSpeed());
 		}
 	}
-	//D
+	//D - moves player right
 	else if(keys.isDown(68)){
 	//	console.log("D");
 		if(player.getX()<785){
@@ -303,6 +310,7 @@ function checkKeyInput(){
 			player.setX(player.getX() + player.getmoveSpeed());
 		}
 	}
+	//space bar to fire bullet
 	if(keys.isDown(32)){
 		if(!player.getDead()){
 			fireBullet();
@@ -310,25 +318,25 @@ function checkKeyInput(){
 	}
 };
 /*
-DRAWING ALL THE ELEMENTS
+DRAWING ALL THE ELEMENTS constantely
 */
 function drawElements(){
-	/*This could slow it down, this only catches a minor problem at the star.
-	Could be removed without consequence.*/
+	//checks the canvas context is available to draw on
 	if(typeof context !== 'undefined'){
-
+		//clears most of canvas' entire canvas to just a blank screen again
 		context.clearRect(0,0, canvas.width, canvas.height);
 
 		backContext.clearRect(0,0, 800, 300);
 
 		hudContext.clearRect(0,0,800,100);
-
+		//then draws elements back onto it, with element changes
+		//draw window planks
 		housePlanks.draw(context);
-
+		//draw all pick ups
 		for(var i = 0; i < pickUps.length; i++){
 				pickUps[i].draw(context);
 		}
-
+		//draws all the pick up text
 		for(var i = 0; i < pickUpText.length; i++){
 			var x = pickUpText[i]();
 			if(x.alpha == 0){
@@ -336,23 +344,20 @@ function drawElements(){
 				i--;
 			}
 		}
-
-		//Should be passed by server. Or added each time a (must be window variable)
-		//added each time "new zombie is called" and removed from each time a "kill zombie" is issued
-
+		//draw all enemies
 		for(var i = 0; i < enemies.length; i++){
 			if(enemies[i].getInside()){
-				enemies[i].draw(context);
+				enemies[i].draw(context);//if inside draw on main canvas
 				//DrawBoxes
 			//	enemies[i].drawBoundingBox(context);
 			}
 			else{
-				enemies[i].draw(backContext);
+				enemies[i].draw(backContext);//if outside draw on background canvas
 				//DrawBoxes
 			//	enemies[i].drawBoundingBox(backContext);
 			}
 		}
-
+		//draw all damage text messages
 		for(var i = 0; i < damageText.length; i++){
 			damageText[i].callText();
 			if(damageText[i].getAlpha() < 0){
@@ -361,12 +366,12 @@ function drawElements(){
 			}
 		}
 		
-
+		//draw all bullets
 		for(var i = 0; i < bullets.length; i++){
 			bullets[i].draw(context);
 		//	bullets[i].drawBoundingBox(context);
 		}
-
+		//draw the cursor
 		drawCursor();
 
 		//The player being drawn after the zombies draws the player after the zombies.
@@ -374,14 +379,14 @@ function drawElements(){
 		//But as they are coming from above and he is more likely to be under, this is a sacrifice.
 		player.draw(context);
 		//player.drawBoundingBox(context);
-
+		//draw the multiplayer connected other players
 		window.mDraw(context);
-		
+		//draw the HUD of information
 		drawHud();
 
 	}
 };
-
+//draws the cursor which follows the mouse location
 var drawCursor = function(){
 	context.drawImage(window.loadedImages.crossHairs, //Image
 	0, 0, /*Source image x and y*/
@@ -394,33 +399,27 @@ var drawCursor = function(){
 UPDATING THE GAME
 */
 function update(){
-
+	//keep incrementing pick up timers, when they hit 1000 they are removed
 	window.shotTimer++;
 	window.pierceTimer++;
 	window.fasterFiringTimer++;
 	window.biggerBulletsTimer++;
 	window.speedTimer++;
-
-	//for(var i = 0; i < bullets.length; i++){
-	//	bullets[i].update();
-	//};
-
+	//update all pick ups and give collision detection to check if user collides with this object
 	for(var i = 0; i < pickUps.length; i++){
 		pickUps[i].update(collisionDetection, player);
 		if(pickUps[i].TTLover()){
-			//Should emit a message about this being picked up.
+			//if TTL is over (Time to live) remove the object from game
 			pickUps.splice(i,1);
 			i--;
 		};
 	};
-
+	//when bullet locations are updated by the server, they each run collision functions client side
 	for(var i = 0; i < bullets.length; i++){
-		bullets[i].update(enemies, collisionDetection);
+		bullets[i].update(enemies, collisionDetection);//given enemies and collision function
 	};
 
-	/*
-	* All pick up variables. Nothing to do with multiplayer.
-	*/
+	//checks if all pick up timers are 1000, if they are remove the benefit from the game
 	if(pierceTimer == 1000){
 		player.setPierce(false);
 	//	console.log("Pierce finished");
@@ -437,31 +436,35 @@ function update(){
 		player.setmoveSpeed(3);
 	}
 
-	//Put zombies in correct order. So they dont get drawn infront of others- when they are below them. Graphics issue.
+		//sorts the enemies by y value, so zombies higher up are drawn first, this stops higher zombies being drawn over the lower 
+	//y value zombies
 	enemies.sort(function(a,b){return a.getY() - b.getY()});
 
+	//the enemies are all updated with their simple AIs' to run at the closest player using euclidean distance
 	for(var i = 0; i < enemies.length; i++){
-		//SHOULD just find the nearest player. This should be run on the server anyway.
 		var tempplayer = player;
-		//find the closest player.
-		//console.log(remotePlayers)
-		if(remotePlayers.length != 0){
+		if(remotePlayers.length != 0){//if no other players, this is unnecessary
 			var currentDistance = euclideanDistance(tempplayer,enemies[i]);
 			for(var o = 0; o < remotePlayers.length; o++){
-				if(!remotePlayers[o].getDead()){	
+				if(!remotePlayers[o].getDead()){	//if not dead, check if other player is closer
 					var tempDistance = euclideanDistance(remotePlayers[o],enemies[i]);
-					if(tempDistance < currentDistance || tempplayer.getDead()){
+					if(tempDistance < currentDistance || tempplayer.getDead()){//if players euclidean is closer
 						currentDistance = tempDistance;
-						tempplayer = remotePlayers[o];
+						tempplayer = remotePlayers[o];//the closest player becomes the zombie target
 					}
 				}
 
 			}//End of for
 		}//End of if
+		//runs at the closest player after calculation
 		enemies[i].update(tempplayer,collisionDetection);
-	}//End of enemies for.
+	}//End of enemies for
 };
 
+//function to calculate which enemy is closest
+//@param a - the zombie element to check
+//@param b - the  player element to check
+//@return the euclidean distances
 function euclideanDistance(a,b){
 	var p = Math.pow((a.getX() - b.getX()),2);
 	var q = Math.pow((a.getY() - b.getY()),2);
@@ -469,7 +472,8 @@ function euclideanDistance(a,b){
 	return Math.sqrt(p + q);
 };
 
-//Should remove.
+//method used to check bounding box collisions
+//reference - taken from http://www.html5rocks.com/en/tutorials/canvas/notearsgame/
 function collisionDetection(a, b) {
 	//REFERENCE NO TEARS GUIDE TO HTML5 GAME DEVELOPMENT
     return a.boxX() < b.boxX() + b.boxWidth &&
@@ -478,31 +482,34 @@ function collisionDetection(a, b) {
          a.boxY() + a.boxHeight > b.boxY();
 };
 
+//repair function used to check if the player is close enough to a window, and if he is repairs the window
 function repair(){
 	if(player.getY() < 150){
 		if(player.getX() > 85 && player.getX() < 200){
 			repairWindow(1);
-			//multiplayer call here. on each different window.
+			//calls the repairWindow with the specified window
 		}
 		else if(player.getX() > 360 && player.getX() < 475){
 			repairWindow(2);
-			//here
+			//calls the repairWindow with the specified window
 		}
 		else if(player.getX() > 590 && player.getX() < 700){
 			repairWindow(3);
-			//and here
+			//calls the repairWindow with the specified window
 		}
 	}
 };
 
+//repair window function
+//@param n - the window to fix a plank on
 function repairWindow(n){
 	console.log("repair here");
-	if(housePlanks.anyBroken(n)){
-		console.log("A houseplank is broken oooh");
-		window.repairTimer++;
+	if(housePlanks.anyBroken(n)){//check if the window is broken at all
+		console.log("A houseplank is broken");
+		window.repairTimer++;//keeps a window timer so the player cant instantly fix windows
 		if(repairTimer == 50){
-			console.log("reached in the 50 here son");
-			housePlanks.repair(n);
+			housePlanks.repair(n);//if the timer is reached, the window at the location is fixed.
+			//houseplanks.repair calls the multiplayer function to communicate the fix to the server
 			repairTimer = 0;
 		}
 		else{
@@ -514,13 +521,23 @@ function repairWindow(n){
 	}
 }
 
+//drop random used when a zombie dies. It pushes the pickup drop to the arraylist
+//@param n - the pickup number
+//@param x - the x location of the drop
+//@param y - the y location of the drop
+//@param inside - if the drop is inside or not
 window.dropRandom = function(n,x,y,inside){
 	//console.log("drop random called with: " +  n);
 	if(inside){
+		//pushes the pick up to the arraylist
 		pickUps.push(new pickup(x,y,n));
 	}
 };
 
+//pickup function is used as an object for the random pickup drops arraylist.
+//@param _x - the x location of the drop
+//@param _y - the y location of the drop
+//@param number -  the number of the pick up
 var pickup = function(_x,_y,number){
 	//Random types:
 	//1: Piercing bullets.
@@ -528,19 +545,19 @@ var pickup = function(_x,_y,number){
 	//3: faster firing rate.
 	//4: Bigger bullets.
 	//add 5 - speed increase.
-	//Bounding Box
-
+	//initialises variables
 	var x = _x, y = _y, type = number;
-
+	//returns x 
 	var getX = function(){
 		return x;
 	};
+	//returns y
 	var getY = function(){
 		return y;
 	};
-
+	//image to use
 	var pickUpImage;
-
+	//checks the image to use, image depends on the number of the pick up (aka the drop type)
 	var imageLoad = function(){
 		switch(type){
 			case 1:
@@ -560,25 +577,30 @@ var pickup = function(_x,_y,number){
 			 break;
 			}
 	};
-
+	//calls image load
 	imageLoad();
-
+	//Bounding Box
 	var boxWidth = 50;
 	var boxHeight = 50;
+	//returns the x location of the box
 	var boxX = function(){
 		return getX() - (boxWidth/2);
 	};
+	//returns the y location of the box
 	var boxY = function(){
 		return getY() - (boxHeight/2);
 	};
+	//Time to live
 	var TTL = 300;
 	var type = number;
-
+	//draw bounding box around the element
+	//@param context - the canvas to draw  onto
 	var drawBoundingBox = function(context){
 		context.fillRect(boxX(), boxY(), 
 			boxWidth, boxHeight);
 	};
-
+	//draws the pick up icon
+	//@param context - the canvas to draw the image onto
 	var draw = function(context){
 		context.drawImage(pickUpImage, //Image
 			0, 0, /*Source image x and y*/
@@ -586,56 +608,57 @@ var pickup = function(_x,_y,number){
 			boxX(), boxY(), /* Destination canvas x and y */
 			boxWidth,boxHeight); /*Destination width and height*/
 	};
-
+	//returns true if TTL is less than one else false
 	var TTLover = function(){
 		return TTL < 1;
 	};
-
+	//updates the pick up to just check for collision detection with the player 
 	var update = function(collisionDetection, player){
 		TTL--;
 
-		if(collisionDetection(player,this)){
-			TTL = 0;
-
+		if(collisionDetection(player,this)){//checks collision detection
+			TTL = 0;//if it collides remote this pick up
+			//and display some text informing the user about the pick up
 			switch(type){
-
+				//The text is added to an array to found out and slowly opacity is decreased until the text has gone
+				//pickuptext stores all of the text objects in the form of a method called fadeout
 				case 1:
 					AlphaOne = 1;
-				  	player.setPierce(true);
-				  	pierceTimer = 0;
+				  	player.setPierce(true);//sets player benfit for picking this pickup up
+				  	pierceTimer = 0;//resets pick up timer
 				  	pickUpText.push(fadeOut("Piercing bullets picked up!",1,50,200));
 				  break;
 				case 2:
 				  	fadeOut("Player health increase!");
-				  	player.setHealth(player.getHealth() + 5);
+				  	player.setHealth(player.getHealth() + 5);//sets player benfit for picking this pickup up
 				  	pickUpText.push(fadeOut("Player health increase!",2,50,260));
 				  	AlphaTwo = 1;
 				  break;
 				case 3:
 					AlphaThree = 1;
 					fadeOut("Shot  speed increase!");
-				  	shotDif = 10;
-				  	fasterFiringTimer = 0;
+				  	shotDif = 10;//sets player benfit for picking this pickup up
+				  	fasterFiringTimer = 0;//resets pick up timer
 				  	pickUpText.push(fadeOut("Shoot speed increase picked up!",3,50,320));
 				  break;
 				case 4:
 					AlphaFour = 1;
 					fadeOut("Bullet size increase!");
-					bulletSize = 18;
-					biggerBulletsTimer = 0;
+					bulletSize = 18;//sets player benfit for picking this pickup up
+					biggerBulletsTimer = 0;//resets pick up timer
 					pickUpText.push(fadeOut("Bullet size increase!",4,50,380));
 				  break;
 				case 5:
 					AlphaFive = 1;
 					fadeOut("Player speed increased!");
-				    player.setmoveSpeed(6);
-				    speedTimer = 0;
+				    player.setmoveSpeed(6);//sets player benfit for picking this pickup up
+				    speedTimer = 0;//resets pick up timer
 				    pickUpText.push(fadeOut("Player speed increase!",5,50,460));
 				 break;
 			}
 		}
 	};
-
+	//returns all variables and functions for external use
 	return{
 		boxWidth:boxWidth,
 		boxHeight:boxHeight,
@@ -651,44 +674,51 @@ var pickup = function(_x,_y,number){
 
 };
 
+//this function is used to track opacity with "taken damage" text
+//@param alpha1 - the alpha opacity of the current text object
+//@param y1 - the current y value of the text object
+//the y value is moved down the page whilst the opacity fades to 0
 function takeArray(alpha1, y1){
 	var alpha =  alpha1;
 	var y = y1;
-
+	//makes the text act accordingly
 	var callText = function(){
 		takeDamageText(alpha, y);
 		alpha = alpha - 0.005;
 		y = y + 1;
 	}
-
+	//return alpha
 	var getAlpha = function(){
 		return alpha;
 	}
-
+	//returns all required functions
 	return {
 		callText:callText,
 		getAlpha:getAlpha
 	}
 };
-
+//function is called to create the "take damage" text on the screen
+//@param alpha1 - the alpha opacity of the current text object
+//@param y1 - the current y value of the text object
 function takeDamageText(alpha1, y1){
 		window.context.fillStyle = "rgba(255, 0, 0, " + alpha1 + ")";
 		context.font = "italic 20pt Arial";
 		var text =  "Damage taken!";
 		if(player.getDead()){
-			text = "Being eaten!";
+			text = "Being eaten!";//changes the text to being eaten if the player is dead
 		}
 		context.fillText(text, 600, y1);
 };
-
+//pushes the damage text onto the array to be updated
 window.addDamageText = function(){
 	damageText.push(takeArray(1,200));
 };
 
-//Fade out text
-/*
-http://stackoverflow.com/questions/9932898/fade-out-effect-for-text-in-html5-canvas
-*/
+//fades out the alpha of all text
+//@param text - the text to be faded
+//@param n - the current n number representing the pick up text to fade
+//@param x - the x of the text
+//@param y - the y of the text
 function fadeOut(text, n,x,y) {
 	return function(){
 		var alpha = 0;
@@ -731,30 +761,37 @@ function fadeOut(text, n,x,y) {
 	  		break;
 	  	}
 	  	if(alpha > 0){
+	  		//draws the text to the screen after alpha has been reduced
 		  	window.context.fillStyle = "rgba(255, 255, 255, " + alpha + ")";
 			context.font = "italic 20pt Arial";
 			context.fillText(text, x, y);
 	    }
-	    return{
+	    return{//returns the required variables for external use
 	    	n:n,
 	    	alpha:alpha
 	    }
 	}
 };
 
+//Draws the entire HUD on a seperate canvas below the game
+//@param enemiesAlive - the amount of enemies alive
 function drawHud(){
+	//the hud context style, set to dark red.
 	window.hudContext.fillStyle = "#300000";
+	//assigning canvas style
 	hudContext.fillRect(0,0,800,100);
 
 	hudContext.fillStyle = "rgba(255,255,255, 1)";
 	hudContext.font = "15pt Calibri";
 	hudContext.fillText("Health:",10,50);
-
+	//draws the text information onto the hud
 	hudContext.fillText("Enemies: " + enemiesAlive, 650,30);
 	hudContext.fillText("Level: " + level, 650,60);
 
 	hudContext.fillText("Score: " + score, 350, 85);
-
+	//draws all of the pick up information
+	//if the timer is >= 1000 then the pick up is disabled
+	//otherwise compute and display the time left on the pick up from 100 to 0%.
 	if(pierceTimer >= 1000){
 		hudContext.fillText("Piercing bullets: Off", 200,30);
 	}
@@ -791,6 +828,8 @@ function drawHud(){
 
 };
 
+//reset function triggerd the server when all players die and need to reset the game.
+//the reset function resets all required variable in order to reset the game
 function reset(){
 	
 	window.housePlanks;

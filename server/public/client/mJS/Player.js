@@ -1,7 +1,12 @@
-var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters passed in.*/
-
-	//Things to add.. bullet speed manipulation. bullet piercin.
-
+/*
+*@author samuel richards
+*@candidate number: 77513
+*
+* Description: the player class of the game, this game is controlled by the user.
+*/
+//@_param _zombieSprite - is actually the human sprite image
+//param otherPlayer - the image used to draw the other remote players
+var Player = function(_zombieSprite, otherplayer){
 	//Sprite variables.
 	var zombieSprite = _zombieSprite, currentSprite = 0, spriteChange = 0;
 	//Player variables.
@@ -14,10 +19,13 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 	var otherPlayerImage = otherplayer; 
 
 	var health = 20; 
+		//takes damage from health
+	//@param deeps - the damage to take
 	var takeDamage = function(deeps){
 		if(health > 0){
 			health -= deeps;
 		}
+		//if health == 0 kill the player
 		if(getDead()){
 			dead = true;
 			if(!sound){
@@ -27,13 +35,14 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 		}
 
 		window.addDamageText();
-
-		//Should have a flashing red hit marker here.
-		//console.log("Taken " + deeps + " damage."); 
 	};
+	//gets the health
+	//@return health return health
 	var getHealth = function(){
 		return health;
 	};
+	//sets the health
+	//@param heal - the heal amount
 	var setHealth = function(heal){
 
 		if(health < 20){
@@ -43,36 +52,41 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 			health = 20;
 		}
 	};
+	//resets health to 10
 	var resetHealth = function(){
 		dead = false;
 		health = 20;
 		deathAnimFinished = false;
 	};
+	//returns true if dead aka health = 0
+	//@return health = 0 true else false
 	var getDead = function(){
 		return health == 0;
 	};
-
+	//sets pierce of player bullets
+	//@param s - the new pierce value
 	var setPierce = function(s){
 		pierce = s;
 	};
-
+	//gets the pierce of player bullets
+	//@rturn pierce te pierce value
 	var getPierce = function(){
 		return pierce;
 	};
 
-	/*Should put the update for the player in the actual player class.. -.-*/
-
 	//Bounding box
 	var boxWidth = 30;
 	var boxHeight = 60;
+	//returns the x value of the box
 	var boxX = function(){
 		return getX() - (boxWidth/2);
 	};
+	//returns the y value of the box
 	var boxY = function(){
 		return getY() - (boxHeight/2);
 	};
 
-	//Pre-rendering canvas
+	//Pre-rendering canvas used for optimisation
 	var render_canvas = document.createElement('canvas');
 	render_canvas.width = 4608;
 	render_canvas.height = 1024;
@@ -80,55 +94,52 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 
 	render_context.drawImage(zombieSprite,0,0, render_canvas.width, render_canvas.height);
 
-	//Append the canvas onto the gameCanvasDiv element on the HTML page to check the image is correct.
-	//gameCanvasDiv.appendChild(render_canvas);
-
 	/*Getters and setters.*/
-
+	//returns current x
 	var getX = function(){
 		return x;
 	};
-
+	//returns current y
 	var getY = function(){
 		return y;
 	};
-
+	//sets the x value
 	var setX = function(_x){
 		x = _x;
 	};
-
+	//sets the y value
 	var setY = function(_y){
 		y = _y;
 	};
-
+	//returns movement speed
 	var getmoveSpeed = function(){
 		return moveSpeed;
 	};
-
+	//sets moved variable used to draw standing or running sprite
 	var setMoved = function(_moved){
 		moved = _moved;
 	};
-
+	//sets move speed
 	var setmoveSpeed = function(speed){
 		moveSpeed = speed;
 	};
-
+	//gets the direction the player is facing
 	var getDir = function(){
 		return direction;
 	};
-
+	//sets the direction of the player
 	var setDir = function(_dir){
 		direction = _dir;
 	};
-
+	//sets the damage of the player
 	var setDamage = function(f){
 		damage = f;
 	};
-
+	//gets the damage of the player
 	var getDamage = function(){
 		return damage;
 	};
-
+	//sprite iterate will keep the correct sprite being displayed
 	var spriteIterate = function(){
 		if(!dead && moved){
 			walk();
@@ -139,12 +150,12 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 		else{
 			die();
 		}
-
+		//and insures all remote players sprite iterate accordingly
 		for(var i = 0; i < remotePlayers.length; i++){
 			remotePlayers[i].spriteIterate();
 		};
 	};
-
+	//if standing draw standing sprite
 	var stand = function(){
 		//first 4 columns - standing still.
 		if(currentSprite < 3){
@@ -154,7 +165,7 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 			currentSprite = 0;
 		}
 	};
-
+	//if walking draw walking sprites
 	var walk = function(){
 		//columns 5-12 - walking.
 		if(currentSprite < 11 && currentSprite > 4){
@@ -164,11 +175,11 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 			currentSprite = 5;
 		}
 	};
-
+	//if attacking draw attacking sprites
 	var attack = function(){
 		//columns 13-22 - attacking.
 	};
-
+	//if dead draw dead sprites
 	var die = function(){
 		if(!deathAnimFinished){
 			//Death shouldn't loop.
@@ -183,10 +194,9 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 			}
 		}
 	};
-
+	//draw method to draw the player
+	//@param context - the canvas to draw onto
 	var draw = function(context){
-		//Maybe have to -64 from x and y, to keep the image on it's exact x and y.
-		//and not drawing from it, this would fuck collision detection.
 		context.drawImage(render_canvas, //Image
 			currentSprite * 128, direction * 128, /*Source image x and y*/
 			128,128, /*Source image width and height*/
@@ -195,6 +205,8 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 		moved = false;
 	};
 	
+	//called to draw all of the remote players in the correct locations
+	//@param context - the canvas to draw onto
 	window.mDraw = function(context){
 		//Image already exists in the payer class, so just going to use this again.
 		for(var i = 0; i < remotePlayers.length; i++){
@@ -205,14 +217,14 @@ var Player = function(_zombieSprite, otherplayer){/*Zombies will have parameters
 				192,192);
 		};
 	};
-
+	//draw the bounding box
+	//@param context - the canvas to draw onto
 	var drawBoundingBox = function(context){
 		context.fillRect(boxX(), boxY(), 
 			boxWidth, boxHeight);
 	};
-
-	//Must remember to return all possible functions here.
-	//Otherwise they can't be seen by other classes.
+	
+	//returns all variables and functions for external used
 	return{
 		getX:getX,
 		getY:getY,
