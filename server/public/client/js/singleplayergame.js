@@ -867,6 +867,6 @@ function reset(){
 	window.score = 0;
 
 	housePlanks = new environment(loadedImages.plank);
-	player = new Player(loadedImages._zombieSprite);
+	player = new Player(loadedImages.playerImage);
 
 };
